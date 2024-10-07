@@ -309,10 +309,12 @@ ax.set_xlabel('Tanggal')
 ax.set_ylabel('Jumlah Sewa (cnt)')
 
 # Mengatur format tanggal untuk sumbu x
-ax.xaxis.set_major_locator(mdates.DayLocator(interval=1))  # Set interval hari
+ax.xaxis.set_major_locator(mdates.DayLocator(interval=2))  # Set interval setiap 2 hari
 ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))  # Format tanggal
 
-plt.xticks(rotation=45)
+# Rotasi dan penempatan label
+plt.setp(ax.xaxis.get_majorticklabels(), rotation=45, ha='right')
+
 plt.tight_layout()
 
 # Menampilkan plot di Streamlit
