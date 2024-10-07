@@ -396,5 +396,48 @@ st.write(" - Analisis Jam Penyewaan: Menggunakan data dari HOUR_DATA, Anda dapat
 st.write("4. *Visualisasi Data*")
 st.write(" - Visualisasi seperti histogram untuk Recency, boxplot untuk Frequency dan Monetary, serta scatter plot antara Frequency dan Monetary memberikan gambaran yang jelas tentang perilaku pelanggan. Ini membantu dalam memahami distribusi dan hubungan antar variabel.")
 
+import pandas as pd
+from datetime import datetime
+import streamlit as st
+
+# Data DAY_DATA
+day_data = {
+    'dteday': ['2011-01-01', '2011-01-02', '2011-01-03', '2011-01-04', '2011-01-05'],
+    'cnt': [985, 801, 1349, 1562, 1600]
+}
+
+# Mengubah menjadi DataFrame
+df_day = pd.DataFrame(day_data)
+df_day['dteday'] = pd.to_datetime(df_day['dteday'])
+
+# Menghitung Total Sewa
+total_sewa = df_day['cnt'].sum()
+
+# Menentukan tanggal sewa terakhir (max date)
+last_date = df_day['dteday'].max()
+
+# Menghitung Recency, Frequency, dan Monetary
+df_rfm = pd.DataFrame({
+    'Recency': [(last_date - date).days for date in df_day['dteday']],
+    'Frequency': df_day['cnt'],  # Anggap frequency adalah total sewa harian
+    'Monetary': df_day['cnt']  # Monetary bisa dianggap sama dengan total sewa
+})
+
+# Menampilkan hasil di Streamlit
+st.title('Analisis RFM')
+st.write('Total Sewa: ', total_sewa)
+st.write('Tanggal Sewa Terakhir: ', last_date)
+st.subheader('Data RFM:')
+st.dataframe(df_rfm)
+
+# Jika ingin menambahkan penjelasan
+st.subheader('Penjelasan RFM:')
+st.write("""
+- **Recency**: Jumlah hari sejak sewa terakhir.
+- **Frequency**: Jumlah total sewa yang dilakukan.
+- **Monetary**: Total sewa, yang dapat dianggap sebagai kontribusi pendapatan.
+""")
+
+
 st.subheader("*Kesimpulan Umum*")
 st.write("Melalui analisis RFM, Anda dapat memahami lebih baik perilaku pelanggan, mengidentifikasi kelompok pelanggan yang berharga, dan merumuskan strategi marketing yang lebih efektif. Pendekatan ini tidak hanya memberikan wawasan berharga tentang perilaku sewa sepeda, tetapi juga memungkinkan perusahaan untuk menyesuaikan strategi sesuai dengan perubahan perilaku pengguna di masa mendatang. Monitoring dan penyesuaian strategi yang berkelanjutan akan semakin meningkatkan efektivitas pemasaran dan retensi pelanggan.")
