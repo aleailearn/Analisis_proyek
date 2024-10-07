@@ -377,7 +377,24 @@ st.write("4. Kerjasama dengan Bisnis Lokal: Berkolaborasi dengan kafe atau tempa
 st.write("5. Strategi Pengiklanan: Fokus pada iklan yang menyoroti bagaimana menggunakan sepeda bisa menjadi solusi alternatif untuk tetap aktif bahkan ketika cuaca kurang baik.")
 
 # kesimpulan
-st.subheader("Analisis lanjutan yang saya lakukan, sebagai berikut:")
-st.write("Analisis RFM (Recency, Frequency, Monetary) bertujuan untuk mengidentifikasi dan memahami perilaku pelanggan berdasarkan seberapa baru mereka melakukan transaksi, seberapa sering mereka berbelanja, dan berapa banyak yang mereka belanjakan. Meskipun hasil analisis menunjukkan bahwa hanya ada satu entri dalam DataFrame RFM, yang menandakan kurangnya variasi dalam data pelanggan, analisis ini tetap relevan sebagai langkah awal untuk menggali wawasan pelanggan. Dengan informasi ini, bisnis dapat memfokuskan upaya pemasaran untuk meningkatkan retensi pelanggan dan memaksimalkan pendapatan. Dalam konteks ini, meskipun data saat ini terbatas, analisis RFM dapat dijadikan alat untuk merencanakan strategi yang lebih baik di masa depan, terutama ketika lebih banyak data tersedia.")
+st.subheader("Analisis RFM yang saya lakukan, sebagai berikut.")
+st.write("1. *Pengolahan Data*")
+st.write(" - Data dari DAY_DATA digunakan untuk menghitung nilai RFM. Setiap pengguna diwakili oleh tanggal sewa dan total jumlah sewa (cnt) harian.")
+st.write(" - Nilai Recency dihitung berdasarkan selisih hari dari tanggal sewa terakhir, dengan tujuan untuk mengidentifikasi seberapa baru seorang pelanggan berinteraksi dengan layanan.")
 
+st.write("2. *Nilai RFM*")
+st.write(" - Recency: Angka yang lebih kecil menunjukkan bahwa pelanggan baru-baru ini aktif, dan kemungkinan besar lebih responsif terhadap promosi. Pelanggan dengan recency rendah bisa dianggap sebagai pelanggan yang memiliki potensi untuk kembali menggunakan layanan.")
+st.write(" - Frequency: Nilai yang lebih tinggi menunjukkan loyalitas pelanggan. Pelanggan yang sering menyewa menunjukkan minat yang kuat terhadap layanan, sehingga penting untuk mempertahankan hubungan baik dengan mereka.")
+st.write(" - Monetary: Nilai ini merefleksikan kontribusi pendapatan dari masing-masing pelanggan. Pelanggan dengan total sewa tinggi dapat dianggap sebagai pelanggan berharga bagi perusahaan.")
 
+st.write("3. *Strategi Marketing*")
+st.write(" - Segmentasi Pelanggan: Pelanggan dapat dikelompokkan berdasarkan nilai RFM mereka. Misalnya, pelanggan dengan recency rendah, frequency tinggi, dan monetary tinggi bisa diberikan reward khusus untuk meningkatkan loyalitas.")
+st.write(" - Promosi Khusus untuk Retensi: Diskon atau penawaran menarik dapat diberikan kepada pelanggan yang telah lama tidak menyewa (recency tinggi) untuk menarik mereka kembali.")
+st.write(" - Kampanye untuk Pelanggan Aktif: Untuk pelanggan dengan frequency tinggi, promosi untuk penyewaan tambahan dalam satu hari dapat meningkatkan frekuensi sewa.")
+st.write(" - Analisis Jam Penyewaan: Menggunakan data dari HOUR_DATA, Anda dapat mengidentifikasi waktu sewa terendah dan merancang promosi untuk meningkatkan sewa pada jam-jam tersebut.")
+
+st.write("4. *Visualisasi Data*")
+st.write(" - Visualisasi seperti histogram untuk Recency, boxplot untuk Frequency dan Monetary, serta scatter plot antara Frequency dan Monetary memberikan gambaran yang jelas tentang perilaku pelanggan. Ini membantu dalam memahami distribusi dan hubungan antar variabel.")
+
+st.subheader("*Kesimpulan Umum*")
+st.write("Melalui analisis RFM, Anda dapat memahami lebih baik perilaku pelanggan, mengidentifikasi kelompok pelanggan yang berharga, dan merumuskan strategi marketing yang lebih efektif. Pendekatan ini tidak hanya memberikan wawasan berharga tentang perilaku sewa sepeda, tetapi juga memungkinkan perusahaan untuk menyesuaikan strategi sesuai dengan perubahan perilaku pengguna di masa mendatang. Monitoring dan penyesuaian strategi yang berkelanjutan akan semakin meningkatkan efektivitas pemasaran dan retensi pelanggan.")
