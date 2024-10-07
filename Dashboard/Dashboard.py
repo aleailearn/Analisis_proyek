@@ -482,6 +482,42 @@ ax3.set_xlabel('Frequency (Total Sewa)')
 ax3.set_ylabel('Monetary (Total Sewa)')
 st.pyplot(fig3)
 
+import pandas as pd
+import streamlit as st
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Data HOUR_DATA
+hour_data = {
+    'dteday': ['2011-01-01', '2011-01-01', '2011-01-01', '2011-01-01', '2011-01-01'],
+    'hr': [0, 1, 2, 3, 4],
+    'cnt': [16, 40, 32, 13, 0]
+}
+
+df_hour = pd.DataFrame(hour_data)
+
+# Menghitung total penyewaan berdasarkan jam
+total_per_hour = df_hour.groupby('hr')['cnt'].sum().reset_index()
+
+# Menampilkan jam dengan penyewaan terendah
+lowest_hour = total_per_hour[total_per_hour['cnt'] == total_per_hour['cnt'].min()]
+
+# Streamlit app
+st.title("Analisis Penyewaan Sepeda per Jam")
+
+# Menampilkan hasil jam dengan penyewaan terendah
+st.write("Jam dengan penyewaan terendah:")
+st.write(lowest_hour)
+
+# Visualisasi total penyewaan per jam
+plt.figure(figsize=(10, 6))
+sns.barplot(x='hr', y='cnt', data=total_per_hour)
+plt.title('Total Penyewaan per Jam')
+plt.xlabel('Jam')
+plt.ylabel('Jumlah Penyewaan')
+st.pyplot(plt)
+
+
 # kesimpulan
 st.subheader("Penjelasan lebih lanjut dari analisis diatas, sebagai berikut.")
 st.write("1. *Pengolahan Data*")
