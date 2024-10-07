@@ -275,17 +275,22 @@ else:
     st.write("- Rata-Rata Suhu: Rata-rata suhu pada hari kerja dan hari libur dapat berbeda secara signifikan. Perhatikan apakah hari libur memiliki suhu yang lebih tinggi atau lebih rendah.")
     st.write("- Rata-Rata Jumlah Sewa: Rata-rata jumlah sewa pada hari kerja mungkin lebih tinggi dibandingkan dengan hari libur atau sebaliknya. Ini bisa mengindikasikan pengaruh suhu terhadap perilaku penyewa, di mana suhu yang lebih tinggi mungkin meningkatkan jumlah sewa, baik pada hari kerja maupun hari libur.")
 
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
-import streamlit as st
 
 # Menjawab pertanyaan 2
 st.write("Pertanyaan 2: Strategi marketing apa yang dapat diterapkan untuk meningkatkan jumlah pengguna (cnt) pada hari kerja ketika kondisi cuaca buruk?")
 
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import streamlit as st
+
 # Definisikan ambang untuk kondisi cuaca buruk
 bad_weather_threshold_temp = 0.3  # Misalnya, suhu di bawah 0.3
 bad_weather_threshold_weathersit = 2  # Kategorikan kondisi cuaca 2 (hujan)
+
+# Pastikan 'dteday' adalah datetime
+df['dteday'] = pd.to_datetime(df['dteday'])
 
 # Ambil data hari kerja dengan kondisi cuaca buruk
 bad_weather_workdays_df = df[(df['workingday'] == 1) &
@@ -304,9 +309,10 @@ ax.set_xlabel('Tanggal')
 ax.set_ylabel('Jumlah Sewa (cnt)')
 
 # Mengatur format tanggal untuk sumbu x
-ax.xaxis.set_major_formatter(plt.FixedFormatter(bad_weather_workdays_df['dteday'].dt.strftime('%Y-%m-%d')))
-plt.xticks(rotation=45)
+ax.xaxis.set_major_locator(mdates.DayLocator(interval=1))  # Set interval hari
+ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))  # Format tanggal
 
+plt.xticks(rotation=45)
 plt.tight_layout()
 
 # Menampilkan plot di Streamlit
