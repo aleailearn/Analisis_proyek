@@ -18,5 +18,5 @@ pip install-r requirements.txt
 ```
 streamlit run Dashboard/Dashboard.py
 
-Berikut link streamlite: https://learningby.streamlit.app/](https://bangkitacademy.streamlit.app/
+Berikut link streamlite: https://bangkitacademy.streamlit.app/
 ```
