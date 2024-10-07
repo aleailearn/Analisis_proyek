@@ -353,11 +353,18 @@ st.pyplot(fig)
 
 
 # kesimpulan
-st.subheader('Kesimpulan')
-st.write("Grafik di atas menunjukkan fluktuasi jumlah penyewaan sepeda pada hari kerja dengan cuaca buruk, dengan tren penyewaan berkisar antara 100 hingga 200 penyewaan per hari, namun terdapat lonjakan signifikan yang mencapai lebih dari 700 penyewaan, yang kemungkinan dipengaruhi oleh faktor-faktor seperti acara khusus atau kebutuhan mendesak. Meskipun cuaca buruk umumnya berdampak negatif pada penggunaan sepeda, beberapa orang tetap memilih untuk menyewa sepeda. Saya mengkaji ulang pertanyan, dan mendapatkan beberapa ide ataupun strategi baru, seperti memberikan diskon khusus pada hari cuaca buruk, kampanye promosi berbasis cuaca melalui email atau aplikasi, serta pengembangan fitur yang memberikan rekomendasi aktivitas saat cuaca tidak mendukung. Selain itu, peluang kolaborasi dengan bisnis lokal dan fokus pada iklan yang menyoroti manfaat bersepeda sebagai solusi untuk tetap aktif meski cuaca buruk juga dapat dioptimalkan.")
+st.subheader('Kasimpulan')
+st.write("Berdasarkan analisis, berikut adalah kesimpulan mengenai pengaruh cuaca buruk terhadap jumlah sewa sepeda:")
+st.write("1. Rata-rata Sewa: Rata-rata jumlah sewa pada hari kerja dengan suhu rendah dan cuaca buruk (seperti hujan) sekitar 100 sewa per hari.")
+st.write("2. Rentang Sewa:")
+    st.write("- Maksimum: Ada hari dengan jumlah sewa tertinggi pada cuaca buruk.")
+    st.write("- Minimum: Terdapat juga hari dengan jumlah sewa yang sangat rendah.")
+st.write("3. Dampak Cuaca Buruk: Jumlah sewa cenderung menurun pada hari-hari dengan cuaca buruk, terutama saat hujan atau suhu sangat rendah, yang menunjukkan dampak negatif signifikan terhadap permintaan.")
+st.write("Hubungan Suhu dan Sewa: Jumlah sewa menurun saat suhu di bawah ambang tertentu, memperlihatkan bagaimana kondisi cuaca memengaruhi perilaku pelanggan.")
+st.write("Kesimpulan Utama: Cuaca buruk berpengaruh signifikan terhadap penurunan jumlah sewa sepeda pada hari kerja, membuat orang cenderung menghindari penggunaan sepeda.")
 
 # Menjawab pertanyaan 2
-st.write("Berdasarkan analisis ini, saya memberikan beberapa strategi marketing yang dapat diterapkan untuk meningkatkan jumlah pengguna pada hari kerja ketika cuaca buruk dapat mencakup:")
+st.write("Untuk mengoptimalkan analisis ini, berikut adalah beberapa strategi marketing yang dapat diterapkan:")
 
 st.write("1. Promosi Diskon untuk Hari Buruk: Tawarkan diskon khusus atau penawaran khusus untuk pengguna yang menyewa pada hari-hari dengan kondisi cuaca buruk.")
 
