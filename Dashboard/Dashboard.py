@@ -357,10 +357,10 @@ st.subheader('Kasimpulan')
 st.write("Berdasarkan analisis, berikut adalah kesimpulan mengenai pengaruh cuaca buruk terhadap jumlah sewa sepeda:")
 st.write("1. Rata-rata Sewa: Rata-rata jumlah sewa pada hari kerja dengan suhu rendah dan cuaca buruk (seperti hujan) sekitar 100 sewa per hari.")
 st.write("2. Rentang Sewa:")
-st.write("- Maksimum: Ada hari dengan jumlah sewa tertinggi pada cuaca buruk.")
-st.write("- Minimum: Terdapat juga hari dengan jumlah sewa yang sangat rendah.")
+st.write("    - Maksimum: Ada hari dengan jumlah sewa tertinggi pada cuaca buruk.")
+st.write("    - Minimum: Terdapat juga hari dengan jumlah sewa yang sangat rendah.")
 st.write("3. Dampak Cuaca Buruk: Jumlah sewa cenderung menurun pada hari-hari dengan cuaca buruk, terutama saat hujan atau suhu sangat rendah, yang menunjukkan dampak negatif signifikan terhadap permintaan.")
-st.write("Hubungan Suhu dan Sewa: Jumlah sewa menurun saat suhu di bawah ambang tertentu, memperlihatkan bagaimana kondisi cuaca memengaruhi perilaku pelanggan.")
+st.write("4. Hubungan Suhu dan Sewa: Jumlah sewa menurun saat suhu di bawah ambang tertentu, memperlihatkan bagaimana kondisi cuaca memengaruhi perilaku pelanggan.")
 st.write("Kesimpulan Utama: Cuaca buruk berpengaruh signifikan terhadap penurunan jumlah sewa sepeda pada hari kerja, membuat orang cenderung menghindari penggunaan sepeda.")
 
 # Menjawab pertanyaan 2
