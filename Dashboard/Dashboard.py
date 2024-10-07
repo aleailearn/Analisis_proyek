@@ -283,43 +283,44 @@ import streamlit as st
 # Menjawab pertanyaan 2
 st.write("Pertanyaan 2: Strategi marketing apa yang dapat diterapkan untuk meningkatkan jumlah pengguna (cnt) pada hari kerja ketika kondisi cuaca buruk?")
 
-# Contoh: Membaca data dari file CSV
-# Gantilah dengan jalur ke file Anda
-# bad_weather_workdays_df = pd.read_csv('path_to_your_file.csv')
+# Definisikan ambang untuk kondisi cuaca buruk
+bad_weather_threshold_temp = 0.3  # Misalnya, suhu di bawah 0.3
+bad_weather_threshold_weathersit = 2  # Kategorikan kondisi cuaca 2 (hujan)
 
-# Untuk contoh ini, kita akan membuat DataFrame contoh
-data = {
-    'dteday': pd.date_range(start='2023-01-01', periods=100, freq='D'),
-    'cnt': (pd.Series(range(100)) + (pd.Series(range(100)) * 0.3).astype(int)).tolist()
-}
-bad_weather_workdays_df = pd.DataFrame(data)
+# Ambil data hari kerja dengan kondisi cuaca buruk
+bad_weather_workdays_df = df[(df['workingday'] == 1) &
+                             (df['temp'] < bad_weather_threshold_temp) &
+                             (df['weathersit'] >= bad_weather_threshold_weathersit)]
 
-# Cek apakah DataFrame 'bad_weather_workdays_df' ada dan tidak kosong
-if 'bad_weather_workdays_df' in locals() and not bad_weather_workdays_df.empty:
-    # Konversi kolom 'dteday' menjadi tipe datetime
-    bad_weather_workdays_df['dteday'] = pd.to_datetime(bad_weather_workdays_df['dteday'], errors='coerce')
+# Menampilkan data yang telah difilter
+st.write("Data Hari Kerja dengan Cuaca Buruk:")
+st.write(bad_weather_workdays_df.head())
 
-    # Membuat visualisasi
-    plt.figure(figsize=(12, 6))
-    sns.lineplot(data=bad_weather_workdays_df, x='dteday', y='cnt', marker='o', color='orange')
+# Membuat visualisasi
+fig, ax = plt.subplots(figsize=(12, 6))
+sns.lineplot(data=bad_weather_workdays_df, x='dteday', y='cnt', marker='o', color='orange', ax=ax)
+ax.set_title('Jumlah Sewa pada Hari Kerja dengan Cuaca Buruk')
+ax.set_xlabel('Tanggal')
+ax.set_ylabel('Jumlah Sewa (cnt)')
 
-    # Mengatur tampilan label tanggal agar lebih jarang
-    plt.title('Jumlah Sewa pada Hari Kerja dengan Cuaca Buruk')
-    plt.xlabel('Tanggal')
-    plt.ylabel('Jumlah Sewa (cnt)')
+# Mengatur format tanggal untuk sumbu x
+ax.xaxis.set_major_formatter(plt.FixedFormatter(bad_weather_workdays_df['dteday'].dt.strftime('%Y-%m-%d')))
+plt.xticks(rotation=45)
 
-    # Menampilkan label tanggal dengan interval lebih jarang (misalnya per kuartal)
-    plt.xticks(pd.date_range(start=bad_weather_workdays_df['dteday'].min(),
-                             end=bad_weather_workdays_df['dteday'].max(),
-                             freq='3M'), rotation=45)
+plt.tight_layout()
 
-    plt.tight_layout()
+# Menampilkan plot di Streamlit
+st.pyplot(fig)
 
-    # Gunakan Streamlit untuk menampilkan plot
-    st.pyplot(plt)
-else:
-    st.error("DataFrame 'bad_weather_workdays_df' tidak ditemukan atau kosong.")
+# Analisis Jumlah Sewa
+average_cnt = bad_weather_workdays_df['cnt'].mean()
+max_cnt = bad_weather_workdays_df['cnt'].max()
+min_cnt = bad_weather_workdays_df['cnt'].min()
 
+# Menampilkan hasil analisis
+st.write(f"Rata-rata jumlah sewa pada hari kerja dengan cuaca buruk: {average_cnt:.2f}")
+st.write(f"Jumlah sewa maksimum: {max_cnt}")
+st.write(f"Jumlah sewa minimum: {min_cnt}")
 
 
 # kesimpulan
