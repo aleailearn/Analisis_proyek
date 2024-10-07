@@ -280,30 +280,38 @@ else:
 st.write("Pertanyaan 2: Strategi marketing apa yang dapat diterapkan untuk meningkatkan jumlah pengguna (cnt) pada hari kerja ketika kondisi cuaca buruk?")
 
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
 import streamlit as st
+import matplotlib.pyplot as plt
+import seaborn as sns
+from matplotlib.dates import DateFormatter
 
-# Konversi kolom 'dteday' menjadi tipe datetime jika belum
-bad_weather_workdays_df['dteday'] = pd.to_datetime(bad_weather_workdays_df['dteday'])
+# Definisikan ambang untuk kondisi cuaca buruk
+bad_weather_threshold_temp = 0.3  # Misalnya, suhu di bawah 0.3
+bad_weather_threshold_weathersit = 2  # Kategorikan kondisi cuaca 2 (hujan)
+
+# Mengubah kolom 'dteday' menjadi tipe datetime
+df['dteday'] = pd.to_datetime(df['dteday'])
+
+# Ambil data hari kerja dengan kondisi cuaca buruk
+bad_weather_workdays_df = df[(df['workingday'] == 1) &
+                             (df['temp'] < bad_weather_threshold_temp) &
+                             (df['weathersit'] >= bad_weather_threshold_weathersit)]
+
+# Menampilkan data yang telah difilter
+st.write("Data Hari Kerja dengan Cuaca Buruk:")
+st.write(bad_weather_workdays_df.head())
 
 # Membuat visualisasi
 fig, ax = plt.subplots(figsize=(12, 6))
 sns.lineplot(data=bad_weather_workdays_df, x='dteday', y='cnt', marker='o', color='orange', ax=ax)
 
-# Mengatur tampilan label tanggal agar lebih jarang
+# Mengatur format tanggal dan tampilan x-axis
+date_form = DateFormatter("%Y-%m-%d")  # Format tanggal
+ax.xaxis.set_major_formatter(date_form)
 ax.set_title('Jumlah Sewa pada Hari Kerja dengan Cuaca Buruk')
 ax.set_xlabel('Tanggal')
 ax.set_ylabel('Jumlah Sewa (cnt)')
-
-# Mengatur format tanggal untuk sumbu x
-ax.xaxis.set_major_locator(mdates.DayLocator(interval=5))  # Set interval setiap 5 hari
-ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))  # Format tanggal
-
-# Rotasi dan penempatan label
-plt.setp(ax.xaxis.get_majorticklabels(), rotation=45, ha='right')
-
+plt.xticks(rotation=45)
 plt.tight_layout()
 
 # Menampilkan plot di Streamlit
@@ -318,6 +326,30 @@ min_cnt = bad_weather_workdays_df['cnt'].min()
 st.write(f"Rata-rata jumlah sewa pada hari kerja dengan cuaca buruk: {average_cnt:.2f}")
 st.write(f"Jumlah sewa maksimum: {max_cnt}")
 st.write(f"Jumlah sewa minimum: {min_cnt}")
+
+# Membuat subplot tambahan jika diperlukan
+fig, axes = plt.subplots(2, 1, figsize=(12, 10), sharex=True)
+
+# Plot jumlah sewa pada cuaca buruk
+sns.lineplot(data=bad_weather_workdays_df, x='dteday', y='cnt', marker='o', color='blue', ax=axes[0])
+axes[0].set_title('Jumlah Sewa pada Hari Kerja dengan Cuaca Buruk')
+axes[0].set_ylabel('Jumlah Sewa (cnt)')
+axes[0].xaxis.set_major_formatter(date_form)
+
+# Plot rata-rata suhu harian (misalnya)
+sns.lineplot(data=bad_weather_workdays_df, x='dteday', y='temp', marker='o', color='red', ax=axes[1])
+axes[1].set_title('Suhu pada Hari Kerja dengan Cuaca Buruk')
+axes[1].set_xlabel('Tanggal')
+axes[1].set_ylabel('Suhu (temp)')
+axes[1].xaxis.set_major_formatter(date_form)
+
+# Rotasi tanggal agar terbaca dengan baik
+plt.xticks(rotation=45)
+plt.tight_layout()
+
+# Menampilkan subplot di Streamlit
+st.pyplot(fig)
+
 
 
 # kesimpulan
