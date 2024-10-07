@@ -287,38 +287,25 @@ st.write("Pertanyaan 2: Strategi marketing apa yang dapat diterapkan untuk menin
 bad_weather_threshold_temp = 0.3  # Misalnya, suhu di bawah 0.3
 bad_weather_threshold_weathersit = 2  # Kategorikan kondisi cuaca 2 (hujan)
 
-# Ambil data hari kerja dengan kondisi cuaca buruk
-bad_weather_workdays_df = df[(df['workingday'] == 1) &
-                             (df['temp'] < bad_weather_threshold_temp) &
-                             (df['weathersit'] >= bad_weather_threshold_weathersit)]
-
-# Menampilkan data yang telah difilter
-st.write("Data Hari Kerja dengan Cuaca Buruk:")
-st.write(bad_weather_workdays_df.head())
+# Konversi kolom 'dteday' menjadi tipe datetime jika belum
+bad_weather_workdays_df['dteday'] = pd.to_datetime(bad_weather_workdays_df['dteday'])
 
 # Membuat visualisasi
-fig, ax = plt.subplots(figsize=(12, 6))
-sns.lineplot(data=bad_weather_workdays_df, x='dteday', y='cnt', marker='o', color='orange', ax=ax)
-ax.set_title('Jumlah Sewa pada Hari Kerja dengan Cuaca Buruk')
-ax.set_xlabel('Tanggal')
-ax.set_ylabel('Jumlah Sewa (cnt)')
-plt.xticks(rotation=45)
+plt.figure(figsize=(12, 6))
+sns.lineplot(data=bad_weather_workdays_df, x='dteday', y='cnt', marker='o', color='orange')
+
+# Mengatur tampilan label tanggal agar lebih jarang
+plt.title('Jumlah Sewa pada Hari Kerja dengan Cuaca Buruk')
+plt.xlabel('Tanggal')
+plt.ylabel('Jumlah Sewa (cnt)')
+
+# Menampilkan label tanggal dengan interval lebih jarang (misalnya per kuartal atau setiap 4 bulan)
+plt.xticks(pd.date_range(start=bad_weather_workdays_df['dteday'].min(), 
+                         end=bad_weather_workdays_df['dteday'].max(), 
+                         freq='3M'), rotation=45)
+
 plt.tight_layout()
-
-# Menampilkan plot di Streamlit
-st.pyplot(fig)
-
-# Analisis Jumlah Sewa
-average_cnt = bad_weather_workdays_df['cnt'].mean()
-max_cnt = bad_weather_workdays_df['cnt'].max()
-min_cnt = bad_weather_workdays_df['cnt'].min()
-
-# Menampilkan hasil analisis
-st.write(f"Rata-rata jumlah sewa pada hari kerja dengan cuaca buruk: {average_cnt:.2f}")
-st.write(f"Jumlah sewa maksimum: {max_cnt}")
-st.write(f"Jumlah sewa minimum: {min_cnt}")
-
-
+plt.show()
 
 # kesimpulan
 st.subheader('Kesimpulan')
@@ -341,27 +328,4 @@ st.write("5. Strategi Pengiklanan: Fokus pada iklan yang menyoroti bagaimana men
 st.subheader("Analisis lanjutan yang saya lakukan, sebagai berikut:")
 st.write("Analisis RFM (Recency, Frequency, Monetary) bertujuan untuk mengidentifikasi dan memahami perilaku pelanggan berdasarkan seberapa baru mereka melakukan transaksi, seberapa sering mereka berbelanja, dan berapa banyak yang mereka belanjakan. Meskipun hasil analisis menunjukkan bahwa hanya ada satu entri dalam DataFrame RFM, yang menandakan kurangnya variasi dalam data pelanggan, analisis ini tetap relevan sebagai langkah awal untuk menggali wawasan pelanggan. Dengan informasi ini, bisnis dapat memfokuskan upaya pemasaran untuk meningkatkan retensi pelanggan dan memaksimalkan pendapatan. Dalam konteks ini, meskipun data saat ini terbatas, analisis RFM dapat dijadikan alat untuk merencanakan strategi yang lebih baik di masa depan, terutama ketika lebih banyak data tersedia.")
 
-import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-# Konversi kolom 'dteday' menjadi tipe datetime jika belum
-bad_weather_workdays_df['dteday'] = pd.to_datetime(bad_weather_workdays_df['dteday'])
-
-# Membuat visualisasi
-plt.figure(figsize=(12, 6))
-sns.lineplot(data=bad_weather_workdays_df, x='dteday', y='cnt', marker='o', color='orange')
-
-# Mengatur tampilan label tanggal agar lebih jarang
-plt.title('Jumlah Sewa pada Hari Kerja dengan Cuaca Buruk')
-plt.xlabel('Tanggal')
-plt.ylabel('Jumlah Sewa (cnt)')
-
-# Menampilkan label tanggal dengan interval lebih jarang (misalnya per kuartal atau setiap 4 bulan)
-plt.xticks(pd.date_range(start=bad_weather_workdays_df['dteday'].min(), 
-                         end=bad_weather_workdays_df['dteday'].max(), 
-                         freq='3M'), rotation=45)
-
-plt.tight_layout()
-plt.show()
 
