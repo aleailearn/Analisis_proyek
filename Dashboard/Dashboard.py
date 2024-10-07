@@ -283,8 +283,19 @@ import streamlit as st
 # Menjawab pertanyaan 2
 st.write("Pertanyaan 2: Strategi marketing apa yang dapat diterapkan untuk meningkatkan jumlah pengguna (cnt) pada hari kerja ketika kondisi cuaca buruk?")
 
-# Pastikan DataFrame bad_weather_workdays_df sudah ada sebelum melanjutkan
-if 'bad_weather_workdays_df' in locals():
+# Contoh: Membaca data dari file CSV
+# Gantilah dengan jalur ke file Anda
+# bad_weather_workdays_df = pd.read_csv('path_to_your_file.csv')
+
+# Untuk contoh ini, kita akan membuat DataFrame contoh
+data = {
+    'dteday': pd.date_range(start='2023-01-01', periods=100, freq='D'),
+    'cnt': (pd.Series(range(100)) + (pd.Series(range(100)) * 0.3).astype(int)).tolist()
+}
+bad_weather_workdays_df = pd.DataFrame(data)
+
+# Cek apakah DataFrame 'bad_weather_workdays_df' ada dan tidak kosong
+if 'bad_weather_workdays_df' in locals() and not bad_weather_workdays_df.empty:
     # Konversi kolom 'dteday' menjadi tipe datetime
     bad_weather_workdays_df['dteday'] = pd.to_datetime(bad_weather_workdays_df['dteday'], errors='coerce')
 
@@ -307,7 +318,8 @@ if 'bad_weather_workdays_df' in locals():
     # Gunakan Streamlit untuk menampilkan plot
     st.pyplot(plt)
 else:
-    st.error("DataFrame 'bad_weather_workdays_df' tidak ditemukan.")
+    st.error("DataFrame 'bad_weather_workdays_df' tidak ditemukan atau kosong.")
+
 
 
 # kesimpulan
