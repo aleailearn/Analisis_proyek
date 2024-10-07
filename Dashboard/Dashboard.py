@@ -376,25 +376,6 @@ st.write("4. Kerjasama dengan Bisnis Lokal: Berkolaborasi dengan kafe atau tempa
 
 st.write("5. Strategi Pengiklanan: Fokus pada iklan yang menyoroti bagaimana menggunakan sepeda bisa menjadi solusi alternatif untuk tetap aktif bahkan ketika cuaca kurang baik.")
 
-# kesimpulan
-st.subheader("Analisis RFM yang saya lakukan, sebagai berikut.")
-st.write("1. *Pengolahan Data*")
-st.write(" - Data dari DAY_DATA digunakan untuk menghitung nilai RFM. Setiap pengguna diwakili oleh tanggal sewa dan total jumlah sewa (cnt) harian.")
-st.write(" - Nilai Recency dihitung berdasarkan selisih hari dari tanggal sewa terakhir, dengan tujuan untuk mengidentifikasi seberapa baru seorang pelanggan berinteraksi dengan layanan.")
-
-st.write("2. *Nilai RFM*")
-st.write(" - Recency: Angka yang lebih kecil menunjukkan bahwa pelanggan baru-baru ini aktif, dan kemungkinan besar lebih responsif terhadap promosi. Pelanggan dengan recency rendah bisa dianggap sebagai pelanggan yang memiliki potensi untuk kembali menggunakan layanan.")
-st.write(" - Frequency: Nilai yang lebih tinggi menunjukkan loyalitas pelanggan. Pelanggan yang sering menyewa menunjukkan minat yang kuat terhadap layanan, sehingga penting untuk mempertahankan hubungan baik dengan mereka.")
-st.write(" - Monetary: Nilai ini merefleksikan kontribusi pendapatan dari masing-masing pelanggan. Pelanggan dengan total sewa tinggi dapat dianggap sebagai pelanggan berharga bagi perusahaan.")
-
-st.write("3. *Strategi Marketing*")
-st.write(" - Segmentasi Pelanggan: Pelanggan dapat dikelompokkan berdasarkan nilai RFM mereka. Misalnya, pelanggan dengan recency rendah, frequency tinggi, dan monetary tinggi bisa diberikan reward khusus untuk meningkatkan loyalitas.")
-st.write(" - Promosi Khusus untuk Retensi: Diskon atau penawaran menarik dapat diberikan kepada pelanggan yang telah lama tidak menyewa (recency tinggi) untuk menarik mereka kembali.")
-st.write(" - Kampanye untuk Pelanggan Aktif: Untuk pelanggan dengan frequency tinggi, promosi untuk penyewaan tambahan dalam satu hari dapat meningkatkan frekuensi sewa.")
-st.write(" - Analisis Jam Penyewaan: Menggunakan data dari HOUR_DATA, Anda dapat mengidentifikasi waktu sewa terendah dan merancang promosi untuk meningkatkan sewa pada jam-jam tersebut.")
-
-st.write("4. *Visualisasi Data*")
-st.write(" - Visualisasi seperti histogram untuk Recency, boxplot untuk Frequency dan Monetary, serta scatter plot antara Frequency dan Monetary memberikan gambaran yang jelas tentang perilaku pelanggan. Ini membantu dalam memahami distribusi dan hubungan antar variabel.")
 
 import pandas as pd
 from datetime import datetime
@@ -437,6 +418,90 @@ st.write("""
 - **Frequency**: Jumlah total sewa yang dilakukan.
 - **Monetary**: Total sewa, yang dapat dianggap sebagai kontribusi pendapatan.
 """)
+
+# Menampilkan visualisasi
+import pandas as pd
+from datetime import datetime
+import streamlit as st
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Data DAY_DATA
+day_data = {
+    'dteday': ['2011-01-01', '2011-01-02', '2011-01-03', '2011-01-04', '2011-01-05'],
+    'cnt': [985, 801, 1349, 1562, 1600]
+}
+
+# Mengubah menjadi DataFrame
+df_day = pd.DataFrame(day_data)
+df_day['dteday'] = pd.to_datetime(df_day['dteday'])
+
+# Menghitung Total Sewa
+total_sewa = df_day['cnt'].sum()
+
+# Menentukan tanggal sewa terakhir (max date)
+last_date = df_day['dteday'].max()
+
+# Menghitung Recency, Frequency, dan Monetary
+df_rfm = pd.DataFrame({
+    'Recency': [(last_date - date).days for date in df_day['dteday']],
+    'Frequency': df_day['cnt'],  # Anggap frequency adalah total sewa harian
+    'Monetary': df_day['cnt']  # Monetary bisa dianggap sama dengan total sewa
+})
+
+# Menampilkan hasil di Streamlit
+st.title('Analisis RFM')
+st.write('Total Sewa: ', total_sewa)
+st.write('Tanggal Sewa Terakhir: ', last_date)
+st.subheader('Data RFM:')
+st.dataframe(df_rfm)
+
+# Visualisasi Histogram untuk Recency
+st.subheader('Distribusi Recency')
+fig1, ax1 = plt.subplots(figsize=(10, 6))
+sns.histplot(df_rfm['Recency'], bins=10, kde=True, ax=ax1)
+ax1.set_title('Distribusi Recency')
+ax1.set_xlabel('Recency (hari)')
+ax1.set_ylabel('Jumlah Pelanggan')
+st.pyplot(fig1)
+
+# Visualisasi Boxplot untuk Frequency
+st.subheader('Distribusi Frequency')
+fig2, ax2 = plt.subplots(figsize=(10, 6))
+sns.boxplot(x=df_rfm['Frequency'], ax=ax2)
+ax2.set_title('Distribusi Frequency')
+ax2.set_xlabel('Frequency (Total Sewa)')
+st.pyplot(fig2)
+
+# Visualisasi Scatter Plot untuk Frequency vs Monetary
+st.subheader('Frequency vs Monetary')
+fig3, ax3 = plt.subplots(figsize=(10, 6))
+sns.scatterplot(x='Frequency', y='Monetary', data=df_rfm, ax=ax3)
+ax3.set_title('Frequency vs Monetary')
+ax3.set_xlabel('Frequency (Total Sewa)')
+ax3.set_ylabel('Monetary (Total Sewa)')
+st.pyplot(fig3)
+
+
+# kesimpulan
+st.subheader("Penjelasan lebih lanjut dari analisis diatas, sebagai berikut.")
+st.write("1. *Pengolahan Data*")
+st.write(" - Data dari DAY_DATA digunakan untuk menghitung nilai RFM. Setiap pengguna diwakili oleh tanggal sewa dan total jumlah sewa (cnt) harian.")
+st.write(" - Nilai Recency dihitung berdasarkan selisih hari dari tanggal sewa terakhir, dengan tujuan untuk mengidentifikasi seberapa baru seorang pelanggan berinteraksi dengan layanan.")
+
+st.write("2. *Nilai RFM*")
+st.write(" - Recency: Angka yang lebih kecil menunjukkan bahwa pelanggan baru-baru ini aktif, dan kemungkinan besar lebih responsif terhadap promosi. Pelanggan dengan recency rendah bisa dianggap sebagai pelanggan yang memiliki potensi untuk kembali menggunakan layanan.")
+st.write(" - Frequency: Nilai yang lebih tinggi menunjukkan loyalitas pelanggan. Pelanggan yang sering menyewa menunjukkan minat yang kuat terhadap layanan, sehingga penting untuk mempertahankan hubungan baik dengan mereka.")
+st.write(" - Monetary: Nilai ini merefleksikan kontribusi pendapatan dari masing-masing pelanggan. Pelanggan dengan total sewa tinggi dapat dianggap sebagai pelanggan berharga bagi perusahaan.")
+
+st.write("3. *Strategi Marketing*")
+st.write(" - Segmentasi Pelanggan: Pelanggan dapat dikelompokkan berdasarkan nilai RFM mereka. Misalnya, pelanggan dengan recency rendah, frequency tinggi, dan monetary tinggi bisa diberikan reward khusus untuk meningkatkan loyalitas.")
+st.write(" - Promosi Khusus untuk Retensi: Diskon atau penawaran menarik dapat diberikan kepada pelanggan yang telah lama tidak menyewa (recency tinggi) untuk menarik mereka kembali.")
+st.write(" - Kampanye untuk Pelanggan Aktif: Untuk pelanggan dengan frequency tinggi, promosi untuk penyewaan tambahan dalam satu hari dapat meningkatkan frekuensi sewa.")
+st.write(" - Analisis Jam Penyewaan: Menggunakan data dari HOUR_DATA, Anda dapat mengidentifikasi waktu sewa terendah dan merancang promosi untuk meningkatkan sewa pada jam-jam tersebut.")
+
+st.write("4. *Visualisasi Data*")
+st.write(" - Visualisasi seperti histogram untuk Recency, boxplot untuk Frequency dan Monetary, serta scatter plot antara Frequency dan Monetary memberikan gambaran yang jelas tentang perilaku pelanggan. Ini membantu dalam memahami distribusi dan hubungan antar variabel.")
 
 
 st.subheader("*Kesimpulan Umum*")
