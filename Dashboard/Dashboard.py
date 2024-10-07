@@ -287,26 +287,35 @@ st.write("Pertanyaan 2: Strategi marketing apa yang dapat diterapkan untuk menin
 bad_weather_threshold_temp = 0.3  # Misalnya, suhu di bawah 0.3
 bad_weather_threshold_weathersit = 2  # Kategorikan kondisi cuaca 2 (hujan)
 
-# Konversi kolom 'dteday' menjadi tipe datetime jika belum
-bad_weather_workdays_df['dteday'] = pd.to_datetime(bad_weather_workdays_df['dteday'])
+# Cek apakah bad_weather_workdays_df sudah didefinisikan
+if 'bad_weather_workdays_df' in locals():
+    # Cek dan konversi kolom 'dteday' menjadi tipe datetime
+    try:
+        bad_weather_workdays_df['dteday'] = pd.to_datetime(bad_weather_workdays_df['dteday'])
+    except Exception as e:
+        st.error(f"Error converting 'dteday' to datetime: {e}")
+        st.stop()  # Hentikan eksekusi jika terjadi error
 
-# Membuat visualisasi
-plt.figure(figsize=(12, 6))
-sns.lineplot(data=bad_weather_workdays_df, x='dteday', y='cnt', marker='o', color='orange')
+    # Membuat visualisasi
+    plt.figure(figsize=(12, 6))
+    sns.lineplot(data=bad_weather_workdays_df, x='dteday', y='cnt', marker='o', color='orange')
 
-# Mengatur tampilan label tanggal agar lebih jarang
-plt.title('Jumlah Sewa pada Hari Kerja dengan Cuaca Buruk')
-plt.xlabel('Tanggal')
-plt.ylabel('Jumlah Sewa (cnt)')
+    # Mengatur tampilan label tanggal agar lebih jarang
+    plt.title('Jumlah Sewa pada Hari Kerja dengan Cuaca Buruk')
+    plt.xlabel('Tanggal')
+    plt.ylabel('Jumlah Sewa (cnt)')
 
-# Menampilkan label tanggal dengan interval lebih jarang (misalnya per kuartal atau setiap 4 bulan)
-plt.xticks(pd.date_range(start=bad_weather_workdays_df['dteday'].min(), 
-                         end=bad_weather_workdays_df['dteday'].max(), 
-                         freq='3M'), rotation=45)
+    # Menampilkan label tanggal dengan interval lebih jarang (misalnya per kuartal)
+    plt.xticks(pd.date_range(start=bad_weather_workdays_df['dteday'].min(), 
+                             end=bad_weather_workdays_df['dteday'].max(), 
+                             freq='3M'), rotation=45)
 
-plt.tight_layout()
-plt.show()
-
+    plt.tight_layout()
+    
+    # Gunakan Streamlit untuk menampilkan plot
+    st.pyplot(plt)
+else:
+    st.error("DataFrame 'bad_weather_workdays_df' tidak ditemukan.")
 # kesimpulan
 st.subheader('Kesimpulan')
 st.write("Grafik di atas menunjukkan fluktuasi jumlah penyewaan sepeda pada hari kerja dengan cuaca buruk, dengan tren penyewaan berkisar antara 100 hingga 200 penyewaan per hari, namun terdapat lonjakan signifikan yang mencapai lebih dari 700 penyewaan, yang kemungkinan dipengaruhi oleh faktor-faktor seperti acara khusus atau kebutuhan mendesak. Meskipun cuaca buruk umumnya berdampak negatif pada penggunaan sepeda, beberapa orang tetap memilih untuk menyewa sepeda. Saya mengkaji ulang pertanyan, dan mendapatkan beberapa ide ataupun strategi baru, seperti memberikan diskon khusus pada hari cuaca buruk, kampanye promosi berbasis cuaca melalui email atau aplikasi, serta pengembangan fitur yang memberikan rekomendasi aktivitas saat cuaca tidak mendukung. Selain itu, peluang kolaborasi dengan bisnis lokal dan fokus pada iklan yang menyoroti manfaat bersepeda sebagai solusi untuk tetap aktif meski cuaca buruk juga dapat dioptimalkan.")
