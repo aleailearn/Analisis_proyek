@@ -285,42 +285,39 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import streamlit as st
 
-# Definisikan ambang untuk kondisi cuaca buruk
-bad_weather_threshold_temp = 0.3  # Misalnya, suhu di bawah 0.3
-bad_weather_threshold_weathersit = 2  # Kategorikan kondisi cuaca 2 (hujan)
-
-# Pastikan 'dteday' adalah datetime
-df['dteday'] = pd.to_datetime(df['dteday'])
-
-# Ambil data hari kerja dengan kondisi cuaca buruk
-bad_weather_workdays_df = df[(df['workingday'] == 1) &
-                             (df['temp'] < bad_weather_threshold_temp) &
-                             (df['weathersit'] >= bad_weather_threshold_weathersit)]
-
-# Menampilkan data yang telah difilter
-st.write("Data Hari Kerja dengan Cuaca Buruk:")
-st.write(bad_weather_workdays_df.head())
+# Konversi kolom 'dteday' menjadi tipe datetime jika belum
+bad_weather_workdays_df['dteday'] = pd.to_datetime(bad_weather_workdays_df['dteday'])
 
 # Membuat visualisasi
-plt.figure(figsize=(12, 6))
-sns.lineplot(data=bad_weather_workdays_df, x='dteday', y='cnt', marker='o', color='orange')
+fig, ax = plt.subplots(figsize=(12, 6))
+sns.lineplot(data=bad_weather_workdays_df, x='dteday', y='cnt', marker='o', color='orange', ax=ax)
 
 # Mengatur tampilan label tanggal agar lebih jarang
-plt.title('Jumlah Sewa pada Hari Kerja dengan Cuaca Buruk')
-plt.xlabel('Tanggal')
-plt.ylabel('Jumlah Sewa (cnt)')
+ax.set_title('Jumlah Sewa pada Hari Kerja dengan Cuaca Buruk')
+ax.set_xlabel('Tanggal')
+ax.set_ylabel('Jumlah Sewa (cnt)')
 
 # Mengatur format tanggal untuk sumbu x
-ax.xaxis.set_major_locator(mdates.DayLocator(interval=2))  # Set interval setiap 2 hari
+ax.xaxis.set_major_locator(mdates.DayLocator(interval=5))  # Set interval setiap 5 hari
 ax.xaxis.set_major_formatter(mdates.DateFormatter('%Y-%m-%d'))  # Format tanggal
 
-# Menampilkan label tanggal dengan interval lebih jarang (misalnya per kuartal atau setiap 4 bulan)
-plt.xticks(pd.date_range(start=bad_weather_workdays_df['dteday'].min(),
-                         end=bad_weather_workdays_df['dteday'].max(),
-                         freq='3M'), rotation=45)
+# Rotasi dan penempatan label
+plt.setp(ax.xaxis.get_majorticklabels(), rotation=45, ha='right')
 
 plt.tight_layout()
-plt.show()
+
+# Menampilkan plot di Streamlit
+st.pyplot(fig)
+
+# Analisis Jumlah Sewa
+average_cnt = bad_weather_workdays_df['cnt'].mean()
+max_cnt = bad_weather_workdays_df['cnt'].max()
+min_cnt = bad_weather_workdays_df['cnt'].min()
+
+# Menampilkan hasil analisis
+st.write(f"Rata-rata jumlah sewa pada hari kerja dengan cuaca buruk: {average_cnt:.2f}")
+st.write(f"Jumlah sewa maksimum: {max_cnt}")
+st.write(f"Jumlah sewa minimum: {min_cnt}")
 
 
 # kesimpulan
