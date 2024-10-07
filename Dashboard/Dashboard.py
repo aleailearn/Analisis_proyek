@@ -482,6 +482,43 @@ ax3.set_xlabel('Frequency (Total Sewa)')
 ax3.set_ylabel('Monetary (Total Sewa)')
 st.pyplot(fig3)
 
+#Menampilkan Analisis jam penyewaan dari strategi marketing
+st.subheader("Analisis jam penyewaan")
+
+import pandas as pd
+import streamlit as st
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Data HOUR_DATA
+hour_data = {
+    'dteday': ['2011-01-01', '2011-01-01', '2011-01-01', '2011-01-01', '2011-01-01'],
+    'hr': [0, 1, 2, 3, 4],
+    'cnt': [16, 40, 32, 13, 0]
+}
+
+df_hour = pd.DataFrame(hour_data)
+
+# Menghitung total penyewaan berdasarkan jam
+total_per_hour = df_hour.groupby('hr')['cnt'].sum().reset_index()
+
+# Menampilkan jam dengan penyewaan terendah
+lowest_hour = total_per_hour[total_per_hour['cnt'] == total_per_hour['cnt'].min()]
+
+# Streamlit app
+st.title("Analisis Penyewaan Sepeda per Jam")
+
+# Menampilkan hasil jam dengan penyewaan terendah
+st.write("Jam dengan penyewaan terendah:")
+st.write(lowest_hour)
+
+# Visualisasi total penyewaan per jam
+plt.figure(figsize=(10, 6))
+sns.barplot(x='hr', y='cnt', data=total_per_hour)
+plt.title('Total Penyewaan per Jam')
+plt.xlabel('Jam')
+plt.ylabel('Jumlah Penyewaan')
+st.pyplot(plt)
 
 # kesimpulan
 st.subheader("Penjelasan lebih lanjut dari analisis diatas, sebagai berikut.")
@@ -505,4 +542,8 @@ st.write(" - Visualisasi seperti histogram untuk Recency, boxplot untuk Frequenc
 
 
 st.subheader("*Kesimpulan Umum*")
-st.write("Melalui analisis RFM, Anda dapat memahami lebih baik perilaku pelanggan, mengidentifikasi kelompok pelanggan yang berharga, dan merumuskan strategi marketing yang lebih efektif. Pendekatan ini tidak hanya memberikan wawasan berharga tentang perilaku sewa sepeda, tetapi juga memungkinkan perusahaan untuk menyesuaikan strategi sesuai dengan perubahan perilaku pengguna di masa mendatang. Monitoring dan penyesuaian strategi yang berkelanjutan akan semakin meningkatkan efektivitas pemasaran dan retensi pelanggan.")
+st.write("Melalui analisis RFM, kami dapat memahami perilaku pelanggan dengan lebih baik, mengidentifikasi kelompok pelanggan yang berharga, dan merumuskan strategi pemasaran yang lebih efektif. Analisis ini tidak hanya memberikan wawasan mendalam tentang pola penyewaan sepeda, tetapi juga memungkinkan perusahaan untuk menyesuaikan strategi berdasarkan data konkret, seperti jam penyewaan terendah yang diidentifikasi melalui analisis HOUR_DATA.
+
+Dengan mengetahui jam-jam dengan penyewaan terendah, perusahaan dapat merencanakan promosi yang lebih terarah, seperti diskon khusus pada waktu-waktu tersebut, untuk mendorong lebih banyak penyewaan. Insight ini memperkaya strategi pemasaran dan meningkatkan peluang untuk menarik pelanggan baru serta mempertahankan pelanggan yang sudah ada.
+
+Pendekatan RFM ini memberikan landasan untuk memantau dan menyesuaikan strategi secara berkelanjutan, seiring dengan perubahan perilaku pengguna di masa mendatang. Dengan demikian, efektivitas pemasaran dan retensi pelanggan dapat terus ditingkatkan.")
