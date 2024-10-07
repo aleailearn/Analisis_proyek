@@ -1,2 +1,2 @@
 https://share.streamlit.io/
-https://learningby.streamlit.app/
+https://bangkitacademy.streamlit.app/
